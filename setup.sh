@@ -2,7 +2,7 @@
 set -euo pipefail
 
 if [ -f "${HOME}/.vimrc" ]; then
-    rm -i "${HOME}/.vimrc" 
+    rm -f "${HOME}/.vimrc" 
 fi
 
 if [ ! -d "${HOME}/.config/vim" ]; then
