@@ -48,6 +48,7 @@ Plug 'prabirshrestha/vim-lsp'
 Plug 'mattn/vim-lsp-settings'
 Plug 'rhysd/vim-healthcheck'
 Plug 'tpope/vim-fugitive'
+Plug 'terryma/vim-smooth-scroll'
 
 "=== Themes ===
 Plug 'morhetz/gruvbox' 
@@ -130,6 +131,11 @@ inoremap <C-Z> <Nop>
 " conflicting keybind with fugitive
 noremap g? <Nop>
 
+noremap <silent> <c-u> :call smooth_scroll#up(&scroll, 5, 2)<CR>
+noremap <silent> <c-d> :call smooth_scroll#down(&scroll, 5, 2)<CR>
+noremap <silent> <c-b> :call smooth_scroll#up(&scroll*2, 5, 4)<CR>
+noremap <silent> <c-f> :call smooth_scroll#down(&scroll*2, 5, 4)<CR>
+
 " auto close braces and parenthesis
 "inoremap " ""<left>
 "inoremap ' ''<left>
@@ -158,6 +164,10 @@ let g:which_key_map['f'] = [ ':Files'                           , 'search files'
 let g:which_key_map['e'] = [ ':30Lexplore'                      , 'file explorer (NERDTree)']
 let g:which_key_map['r'] = [ ':RG'                              , 'ripgrep' ]
 let g:which_key_map['t'] = [ ':term'                            , 'terminal']
+
+"let g:which_key_map.b = {
+    "\ 'name' : '+buffer'.
+    "\ 'd'    : ':
 
 let g:which_key_map.C = {
       \ 'name' : '+configuration',
