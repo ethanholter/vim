@@ -37,18 +37,15 @@ call plug#begin()
 
 "=== Utility ===
 Plug 'junegunn/vim-plug'
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'liuchengxu/vim-which-key'
-Plug 'preservim/nerdtree'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 Plug 'preservim/nerdcommenter'
 Plug 'prabirshrestha/vim-lsp'
 Plug 'mattn/vim-lsp-settings'
-Plug 'psliwka/vim-smoothie'
 Plug 'rhysd/vim-healthcheck'
 Plug 'tpope/vim-fugitive'
 
@@ -64,6 +61,11 @@ call plug#end()
 set number
 set showcmd
 set spr
+set smarttab
+set shiftwidth=4
+set nowrap
+let g:lsp_diagnostics_enabled = 0
+
 
 " Workaround to register escape char for alt key as alt key
 let c='a'
@@ -119,16 +121,14 @@ noremap <A-j> :move +1<CR>
 noremap <A-up> :move -2<CR>
 noremap <A-down> :move +1<CR>
 
-" Curr dir in NERDTree
-nnoremap . <Nop>
-let NERDTreeMapChdir='.'
-let NERDTreeMapChangeRoot='.'
-
 " prevent ctrl z typo from crashing vim
 noremap <C-z> <Nop>
 inoremap <C-z> <Nop>
 noremap <C-Z> <Nop>
 inoremap <C-Z> <Nop>
+
+" conflicting keybind with fugitive
+noremap g? <Nop>
 
 " auto close braces and parenthesis
 "inoremap " ""<left>
@@ -139,7 +139,7 @@ inoremap <C-Z> <Nop>
 "inoremap {<CR> {<CR>}<ESC>O
 "inoremap {;<CR> {<CR>};<ESC>O
 
-" Tab to accept coc suggestion
+" Enter to accept coc suggestion
 inoremap <silent><expr> <CR> coc#pum#visible() ? coc#pum#confirm()
                               \: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
 " ==================================================
@@ -158,14 +158,14 @@ let g:which_key_use_floating_win = 1
 " Single mappings
 let g:which_key_map['/'] = [ '<Plug>NERDCommenterToggle'        , 'comment' ]
 let g:which_key_map['f'] = [ ':Files'                           , 'search files' ]
-let g:which_key_map['e'] = [':NERDTreeToggle'                   , 'file explorer (NERDTree)']
+let g:which_key_map['e'] = [ ':30Lexplore'                      , 'file explorer (NERDTree)']
 let g:which_key_map['r'] = [ ':RG'                              , 'ripgrep' ]
 let g:which_key_map['t'] = [ ':term'                            , 'terminal']
 
 let g:which_key_map.C = {
       \ 'name' : '+configuration',
-      \ 'v' : [':tabnew $MYVIMRC' , 'open vimrc'],
-      \ 'c' : [':Colors'          , 'colors'],
+      \ 'v' : [':tabnew $MYVIMRC'                                                          , 'open vimrc'],
+      \ 'c' : [':Colors'                                                                   , 'colors'],
       \}
 let g:which_key_map.g = {
       \ 'name' : '+goto',
@@ -264,8 +264,6 @@ function! s:on_lsp_buffer_enabled() abort
     setlocal omnifunc=lsp#complete
     setlocal signcolumn=yes
     if exists('+tagfunc') | setlocal tagfunc=lsp#tagfunc | endif
-    nmap <buffer> [g <plug>(lsp-previous-diagnostic)
-    nmap <buffer> ]g <plug>(lsp-next-diagnostic)
     nmap <buffer> K <plug>(lsp-hover)
 
     let g:lsp_format_sync_timeout = 1000
