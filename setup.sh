@@ -2,14 +2,18 @@
 set -euo pipefail
 
 if [ -f "${HOME}/.vimrc" ]; then
-    echo "vimrc already exists. Please delete it and try again."
-    exit -1
+    rm -i "${HOME}/.vimrc" 
 fi
 
-if [ ! -f "${HOME}/.config/vim" ]; then
+if [ ! -d "${HOME}/.config/vim" ]; then
     git clone https://github.com/ethanholter/vim "${HOME}/.config/vim"
+else
+    (cd ${HOME}/.config/vim && git pull)
 fi
 
-ln -s "${HOME}/.config/vim/.vimrc" "${HOME}/.vimrc"
+if [ ! -f "${HOME}/.vimrc" ]; then
+    ln -s "${HOME}/.config/vim/.vimrc" "${HOME}/.vimrc"
+fi
 
 echo "success"
+
