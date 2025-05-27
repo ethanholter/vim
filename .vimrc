@@ -1,7 +1,6 @@
 " ==================================================
 "                Misc Setup Scripting
 " ==================================================
-
 "Use 24-bit (true-color) mode in Vim/Neovim when outside tmux.
 "If you're using tmux version 2.2 or later, you can remove the outermost $TMUX check and use tmux's 24-bit color support
 "(see < http://sunaku.github.io/tmux-24bit-color.html#usage > for more information.)
@@ -37,36 +36,119 @@ call plug#begin()
 
 "=== Utility ===
 Plug 'junegunn/vim-plug'
-Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
-Plug 'vim-airline/vim-airline'
-Plug 'vim-airline/vim-airline-themes'
+
+" Quality of life
 Plug 'liuchengxu/vim-which-key'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
+Plug 'scrooloose/nerdtree'
+Plug 'airblade/vim-gitgutter'
+
+" Editing Tools
+Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 Plug 'preservim/nerdcommenter'
 Plug 'prabirshrestha/vim-lsp'
 Plug 'mattn/vim-lsp-settings'
-Plug 'rhysd/vim-healthcheck'
-Plug 'tpope/vim-fugitive'
+
+" Customization / Tweaks
 Plug 'terryma/vim-smooth-scroll'
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
+Plug 'Yggdroot/indentLine'
 
 "=== Themes ===
 Plug 'morhetz/gruvbox' 
 
 call plug#end()
-
 " ==================================================
 "                  Configurations 
 " ==================================================
-
 set number
 set showcmd
 set spr
 set smarttab
 set shiftwidth=4
 set nowrap
+set wildmenu
 let g:lsp_diagnostics_enabled = 0
 
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Text, tab and indent related
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Use spaces instead of tabs
+set expandtab
+" Be smart when using tabs ;)
+set smarttab
+
+" 1 tab == 4 spaces
+set shiftwidth=4
+set tabstop=4
+
+" Linebreak on 500 characters
+set lbr
+set tw=500
+
+set ai "Auto indent
+set si "Smart indent
+set wrap "Wrap lines
+
+" Set 7 lines to the cursor - when moving vertically using j/k
+set so=7
+
+" Turn on the Wild menu
+set wildmenu
+
+" Ignore compiled files
+set wildignore=*.o,*~,*.pyc
+if has("win16") || has("win32")
+    set wildignore+=.git\*,.hg\*,.svn\*
+else
+    set wildignore+=*/.git/*,*/.hg/*,*/.svn/*,*/.DS_Store
+endif
+
+" Always show current position
+set ruler
+
+" Height of the command bar
+set cmdheight=1
+
+" A buffer becomes hidden when it is abandoned
+set hid
+
+" Configure backspace so it acts as it should act
+set backspace=eol,start,indent
+set whichwrap+=<,>,h,l
+
+" Ignore case when searching
+set ignorecase
+
+" When searching try to be smart about cases
+set smartcase
+
+" Highlight search results
+set hlsearch
+
+" Makes search act like search in modern browsers
+set incsearch
+
+" For regular expressions turn magic on
+set magic
+
+set completeopt=noinsert,menu,menuone,preview
+
+" Show matching brackets when text indicator is over them
+set showmatch
+
+" No annoying sound on errors
+set noerrorbells
+set novisualbell
+set t_vb=
+set tm=500
+
+" Properly disable sound on errors on MacVim
+if has("gui_macvim")
+    autocmd GUIEnter * set vb t_vb=
+endif
 
 " Workaround to register escape char for alt key as alt key
 let c='a'
@@ -98,11 +180,12 @@ endif
 set background=dark
 autocmd vimenter * ++nested colorscheme gruvbox
 
+let g:indentLine_char = '▏'
+
 " ==================================================
 "                    Key Binds
 " ==================================================
 "
-" TODO quick access to vimrc with commands. 
 " TODO fzf default to opening a new buffer.
 " TODO misc customization shit leader menu
 
@@ -128,14 +211,13 @@ inoremap <C-z> <Nop>
 noremap <C-Z> <Nop>
 inoremap <C-Z> <Nop>
 
-" conflicting keybind with fugitive
-noremap g? <Nop>
+map <C-Space> <Nop>
+imap <C-Space> <C-N>
 
 noremap <silent> <c-u> :call smooth_scroll#up(&scroll, 5, 2)<CR>
 noremap <silent> <c-d> :call smooth_scroll#down(&scroll, 5, 2)<CR>
 noremap <silent> <c-b> :call smooth_scroll#up(&scroll*2, 5, 4)<CR>
 noremap <silent> <c-f> :call smooth_scroll#down(&scroll*2, 5, 4)<CR>
-
 " auto close braces and parenthesis
 "inoremap " ""<left>
 "inoremap ' ''<left>
@@ -161,7 +243,7 @@ let g:which_key_use_floating_win = 1
 " Single mappings
 let g:which_key_map['/'] = [ '<Plug>NERDCommenterToggle'        , 'comment' ]
 let g:which_key_map['f'] = [ ':Files'                           , 'search files' ]
-let g:which_key_map['e'] = [ ':30Lexplore'                      , 'file explorer (NERDTree)']
+let g:which_key_map['e'] = [ ':NERDTreeToggle'                      , 'file explorer (NERDTree)']
 let g:which_key_map['r'] = [ ':RG'                              , 'ripgrep' ]
 let g:which_key_map['t'] = [ ':term'                            , 'terminal']
 
@@ -174,6 +256,7 @@ let g:which_key_map.C = {
       \ 'v' : [':tabnew $MYVIMRC'                                                          , 'open vimrc'],
       \ 'c' : [':Colors'                                                                   , 'colors'],
       \}
+
 let g:which_key_map.g = {
       \ 'name' : '+goto',
       \ 'd' : ['<plug>(lsp-definition)'              , 'definition'],
@@ -189,9 +272,7 @@ let g:which_key_map.c = {
      \ 'a' : [':LspCodeAction'    , 'code actions'],
      \ 'r' : [':LspRename'        , 'rename symbol'],
   \ }
-    "nmap <buffer> <leader>rn <plug>(lsp-rename)
-    "nmap <buffer> [g <plug>(lsp-previous-diagnostic)
-    "nmap <buffer> ]g <plug>(lsp-next-diagnostic)
+
 " Find
 let g:which_key_map.f = {
       \ 'name' : '+fuzzyfinder',
@@ -271,7 +352,7 @@ function! s:on_lsp_buffer_enabled() abort
     setlocal omnifunc=lsp#complete
     setlocal signcolumn=yes
     if exists('+tagfunc') | setlocal tagfunc=lsp#tagfunc | endif
-    nmap <buffer> K <plug>(lsp-hover)
+    "nmap <buffer> K <plug>(lsp-hover)
 
     let g:lsp_format_sync_timeout = 1000
     autocmd! BufWritePre *.rs,*.go call execute('LspDocumentFormatSync')
