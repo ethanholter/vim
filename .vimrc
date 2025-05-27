@@ -145,6 +145,19 @@ set novisualbell
 set t_vb=
 set tm=500
 
+" Dont polute workspace with swap files. they never seem to help anyways
+set nobackup
+set nowb
+set noswapfile
+
+" :W sudo saves the file
+" (useful for handling the permission-denied error)
+command! W execute 'w !sudo tee % > /dev/null' <bar> edit!
+
+" Set to auto read when a file is changed from the outside
+set autoread
+au FocusGained,BufEnter * silent! checktime
+
 " Properly disable sound on errors on MacVim
 if has("gui_macvim")
     autocmd GUIEnter * set vb t_vb=
@@ -195,9 +208,18 @@ map <Space> <Leader>
 
 " Ctrl + S = save file
 noremap <C-S> <Nop>
-inoremap <C-S> <Nop>
 map <C-S> <Esc>:w<CR>
-imap <C-S> <Esc>:w<CR>
+
+map <C-j> <C-W>j
+map <C-k> <C-W>k
+map <C-h> <C-W>h
+map <C-l> <C-W>l
+
+map H <Nop> 
+map L <Nop> 
+
+map H gT
+map L gt
 
 " move lines up and down
 noremap <A-k> :move -2<CR>
@@ -210,9 +232,6 @@ noremap <C-z> <Nop>
 inoremap <C-z> <Nop>
 noremap <C-Z> <Nop>
 inoremap <C-Z> <Nop>
-
-map <C-Space> <Nop>
-imap <C-Space> <C-N>
 
 noremap <silent> <c-u> :call smooth_scroll#up(&scroll, 5, 2)<CR>
 noremap <silent> <c-d> :call smooth_scroll#down(&scroll, 5, 2)<CR>
