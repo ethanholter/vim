@@ -55,6 +55,7 @@ Plug 'terryma/vim-smooth-scroll'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'Yggdroot/indentLine'
+Plug 'mhinz/vim-startify'
 
 "=== Themes ===
 Plug 'morhetz/gruvbox' 
@@ -208,7 +209,9 @@ map <Space> <Leader>
 
 " Ctrl + S = save file
 noremap <C-S> <Nop>
+inoremap <C-S> <Nop>
 map <C-S> <Esc>:w<CR>
+imap <C-S> <Esc>:w<CR>
 
 map <C-j> <C-W>j
 map <C-k> <C-W>k
@@ -216,6 +219,7 @@ map <C-h> <C-W>h
 map <C-l> <C-W>l
 
 map H <Nop> 
+map J <Nop> 
 map L <Nop> 
 
 map H gT
