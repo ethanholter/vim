@@ -56,10 +56,12 @@ Plug 'Yggdroot/indentLine'
 Plug 'morhetz/gruvbox' 
 
 call plug#end()
+
 " ==================================================
 "                  Configurations 
 " ==================================================
 set ai "Auto indent
+set autoread
 set backspace=eol,start,indent
 set cmdheight=1
 set completeopt=noinsert,menu,menuone,preview
@@ -88,6 +90,8 @@ set smarttab
 set so=7
 set spr
 set tabstop=4
+set timeoutlen=250
+set timeout ttimeoutlen=50
 set tm=500
 set t_vb=
 set tw=500
@@ -95,6 +99,8 @@ set whichwrap+=<,>,h,l
 set wildignore=*.o,*~,*.pyc
 set wildmenu
 set wrap "Wrap lines
+set background=dark
+colorscheme slate
 
 if has("win16") || has("win32")
     set wildignore+=.git\*,.hg\*,.svn\*
@@ -106,7 +112,6 @@ endif
 command! W execute 'w !sudo tee % > /dev/null' <bar> edit!
 
 " Set to auto read when a file is changed from the outside
-set autoread
 au FocusGained,BufEnter * silent! checktime
 
 " Properly disable sound on errors on MacVim
@@ -122,14 +127,9 @@ while c <= 'z'
   let c = nr2char(1+char2nr(c))
 endw
 
-set timeout ttimeoutlen=50
-
 " ==================================================
 "                    Key Binds
 " ==================================================
-"
-" TODO fzf default to opening a new buffer.
-" TODO misc customization shit leader menu
 
 " leader key
 noremap <Space> <Nop>
@@ -160,7 +160,6 @@ vnoremap <A-j> :move '>+1<CR>gv
 vnoremap <A-up> :move '<-2<CR>gv
 vnoremap <A-down> :move '>+1<<CR>gv
 
-
 " prevent ctrl z typo from crashing vim
 noremap <C-z> <Nop>
 inoremap <C-z> <Nop>
@@ -180,7 +179,6 @@ vnoremap <silent> <leader> :silent <c-u> :silent WhichKeyVisual ' '<CR>
 let g:which_key_map =  {}
 let g:which_key_sep = ': '
 
-set timeoutlen=250
 let g:which_key_use_floating_win = 1
 
 " Single mappings
