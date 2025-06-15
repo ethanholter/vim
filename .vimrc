@@ -47,15 +47,10 @@ Plug 'airblade/vim-gitgutter'
 " Editing Tools
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 Plug 'preservim/nerdcommenter'
-Plug 'prabirshrestha/vim-lsp'
-Plug 'mattn/vim-lsp-settings'
 
 " Customization / Tweaks
 Plug 'terryma/vim-smooth-scroll'
-Plug 'vim-airline/vim-airline'
-Plug 'vim-airline/vim-airline-themes'
 Plug 'Yggdroot/indentLine'
-Plug 'mhinz/vim-startify'
 
 "=== Themes ===
 Plug 'morhetz/gruvbox' 
@@ -64,93 +59,48 @@ call plug#end()
 " ==================================================
 "                  Configurations 
 " ==================================================
-set number
-set showcmd
-set spr
-set smarttab
-set shiftwidth=4
-set nowrap
-set wildmenu
-let g:lsp_diagnostics_enabled = 0
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Text, tab and indent related
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Use spaces instead of tabs
-set expandtab
-" Be smart when using tabs ;)
-set smarttab
-
-" 1 tab == 4 spaces
-set shiftwidth=4
-set tabstop=4
-
-" Linebreak on 500 characters
-set lbr
-set tw=500
-
 set ai "Auto indent
+set backspace=eol,start,indent
+set cmdheight=1
+set completeopt=noinsert,menu,menuone,preview
+set expandtab
+set hid
+set hlsearch
+set ignorecase
+set incsearch
+set lbr
+set magic
+set nobackup
+set noerrorbells
+set noswapfile
+set novisualbell
+set nowb
+set nowrap
+set number
+set ruler
+set shiftwidth=4
+set showcmd
+set showmatch
 set si "Smart indent
+set smartcase
+set smarttab
+set smarttab
+set so=7
+set spr
+set tabstop=4
+set tm=500
+set t_vb=
+set tw=500
+set whichwrap+=<,>,h,l
+set wildignore=*.o,*~,*.pyc
+set wildmenu
 set wrap "Wrap lines
 
-" Set 7 lines to the cursor - when moving vertically using j/k
-set so=7
-
-" Turn on the Wild menu
-set wildmenu
-
-" Ignore compiled files
-set wildignore=*.o,*~,*.pyc
 if has("win16") || has("win32")
     set wildignore+=.git\*,.hg\*,.svn\*
 else
     set wildignore+=*/.git/*,*/.hg/*,*/.svn/*,*/.DS_Store
 endif
-
-" Always show current position
-set ruler
-
-" Height of the command bar
-set cmdheight=1
-
-" A buffer becomes hidden when it is abandoned
-set hid
-
-" Configure backspace so it acts as it should act
-set backspace=eol,start,indent
-set whichwrap+=<,>,h,l
-
-" Ignore case when searching
-set ignorecase
-
-" When searching try to be smart about cases
-set smartcase
-
-" Highlight search results
-set hlsearch
-
-" Makes search act like search in modern browsers
-set incsearch
-
-" For regular expressions turn magic on
-set magic
-
-set completeopt=noinsert,menu,menuone,preview
-
-" Show matching brackets when text indicator is over them
-set showmatch
-
-" No annoying sound on errors
-set noerrorbells
-set novisualbell
-set t_vb=
-set tm=500
-
-" Dont polute workspace with swap files. they never seem to help anyways
-set nobackup
-set nowb
-set noswapfile
-
 " :W sudo saves the file
 " (useful for handling the permission-denied error)
 command! W execute 'w !sudo tee % > /dev/null' <bar> edit!
@@ -174,28 +124,6 @@ endw
 
 set timeout ttimeoutlen=50
 
-let vimDir = '$HOME/.vim'
-if stridx(&runtimepath, expand(vimDir)) == -1
-  " vimDir is not on runtimepath, add it
-  let &runtimepath.=','.vimDir
-endif
-
-" Keep undo history across sessions by storing it in a file
-if has('persistent_undo')
-    let myUndoDir = expand(vimDir . '/undodir')
-    " Create dirs
-    call system('mkdir ' . vimDir)
-    call system('mkdir ' . myUndoDir)
-    let &undodir = myUndoDir
-    set undofile
-endif
-
-" Set color scheme
-set background=dark
-autocmd vimenter * ++nested colorscheme gruvbox
-
-let g:indentLine_char = '▏'
-
 " ==================================================
 "                    Key Binds
 " ==================================================
@@ -208,22 +136,18 @@ noremap <Space> <Nop>
 map <Space> <Leader>
 
 " Ctrl + S = save file
-noremap <C-S> <Nop>
-inoremap <C-S> <Nop>
-map <C-S> <Esc>:w<CR>
-imap <C-S> <Esc>:w<CR>
+noremap <C-S> <Esc>:w<CR>
+vnoremap <C-S> <Esc>:w<CR>
+inoremap <C-S> <Esc>:w<CR>
 
 map <C-j> <C-W>j
 map <C-k> <C-W>k
 map <C-h> <C-W>h
 map <C-l> <C-W>l
 
-map H <Nop> 
-map J <Nop> 
-map L <Nop> 
-
-map H gT
-map L gt
+noremap J <Nop> 
+noremap H gT
+noremap L gt
 
 " move lines up and down
 noremap <A-k> :move -2<CR>
@@ -231,24 +155,20 @@ noremap <A-j> :move +1<CR>
 noremap <A-up> :move -2<CR>
 noremap <A-down> :move +1<CR>
 
+vnoremap <A-k> :move '<-2<CR>gv
+vnoremap <A-j> :move '>+1<CR>gv
+vnoremap <A-up> :move '<-2<CR>gv
+vnoremap <A-down> :move '>+1<<CR>gv
+
+
 " prevent ctrl z typo from crashing vim
 noremap <C-z> <Nop>
 inoremap <C-z> <Nop>
-noremap <C-Z> <Nop>
-inoremap <C-Z> <Nop>
 
 noremap <silent> <c-u> :call smooth_scroll#up(&scroll, 5, 2)<CR>
 noremap <silent> <c-d> :call smooth_scroll#down(&scroll, 5, 2)<CR>
 noremap <silent> <c-b> :call smooth_scroll#up(&scroll*2, 5, 4)<CR>
 noremap <silent> <c-f> :call smooth_scroll#down(&scroll*2, 5, 4)<CR>
-" auto close braces and parenthesis
-"inoremap " ""<left>
-"inoremap ' ''<left>
-"inoremap ( ()<left>
-"inoremap [ []<left>
-"inoremap { {}<left>
-"inoremap {<CR> {<CR>}<ESC>O
-"inoremap {;<CR> {<CR>};<ESC>O
 
 " ==================================================
 "                  Plugin: WhichKey
@@ -350,41 +270,3 @@ let g:which_key_map.p = {
 
 " Register which key map
 call which_key#register(' ', "g:which_key_map")
-
-
-" ==================================================
-"                  Plugin: lsp 
-" ==================================================
- if executable('pylsp')
-    " pip install python-lsp-server
-    au User lsp_setup call lsp#register_server({
-        \ 'name': 'pylsp',
-        \ 'cmd': {server_info->['pylsp']},
-        \ 'allowlist': ['python'],
-        \ })
-endif
-if executable('clangd')
-    au User lsp_setup call lsp#register_server({
-        \ 'name': 'clangd',
-        \ 'cmd': {server_info->['clangd', '-background-index']},
-        \ 'whitelist': ['c', 'cpp', 'objc', 'objcpp'],
-        \ })
-endif
-
-function! s:on_lsp_buffer_enabled() abort
-    setlocal omnifunc=lsp#complete
-    setlocal signcolumn=yes
-    if exists('+tagfunc') | setlocal tagfunc=lsp#tagfunc | endif
-    "nmap <buffer> K <plug>(lsp-hover)
-
-    let g:lsp_format_sync_timeout = 1000
-    autocmd! BufWritePre *.rs,*.go call execute('LspDocumentFormatSync')
-    
-    " refer to doc to add more commands
-endfunction
-
-augroup lsp_install
-    au!
-    " call s:on_lsp_buffer_enabled only for languages that has the server registered.
-    autocmd User lsp_buffer_enabled call s:on_lsp_buffer_enabled()
-augroup END
