@@ -70,37 +70,28 @@ set hid
 set hlsearch
 set ignorecase
 set incsearch
-set lbr
-set magic
-set nobackup
-set noerrorbells
-set noswapfile
-set novisualbell
-set nowb
-set nowrap
-set number
-set ruler
-set shiftwidth=4
-set showcmd
-set showmatch
-set si "Smart indent
-set smartcase
-set smarttab
-set smarttab
-set so=7
-set spr
-set tabstop=4
-set timeoutlen=250
-set timeout ttimeoutlen=50
-set tm=500
-set t_vb=
-set tw=500
-set whichwrap+=<,>,h,l
-set wildignore=*.o,*~,*.pyc
-set wildmenu
-set wrap "Wrap lines
-set background=dark
-colorscheme slate
+set magic           "Allow use of regex-like pattern matching in search
+set noerrorbells    "Disable annoying bells
+"set noswapfile      "Swap file is more annoying than helpful
+set novisualbell    "Disable screen flash 
+set nowrap          "No line wrap
+set number          "Show line numbers
+set ruler           "Show cursor coords in bottom right
+set shiftwidth=4    "Tab width
+set showmatch       "Highlight bracket match when typed
+set smartindent     "Auto indent on new line
+set smartcase       "Only match case in search  
+set smarttab        "Honestly idk what this does but its useful       
+set scrolloff=5     "Padding from top and bottom of screen when scrolling
+set splitright      "put new windows on right when splitting
+set tabstop=4       "Tab = 4 spaces   
+set timeoutlen=250  "Idk what this does.
+set timeout         "^
+set whichwrap+=<,>,h,l      "idk what this does
+set wildignore=*.o,*~,*.pyc "ignore these for wild cards
+set wildmenu        "auto complete commands
+set background=dark "Dark mode
+colorscheme slate   "Color scheme
 
 if has("win16") || has("win32")
     set wildignore+=.git\*,.hg\*,.svn\*
