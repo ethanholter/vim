@@ -36,7 +36,7 @@ call plug#begin()
 
 "=== Utility ===
 Plug 'junegunn/vim-plug'
-
+Plug 'LnL7/vim-nix'
 " Quality of life
 Plug 'liuchengxu/vim-which-key'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
@@ -91,7 +91,7 @@ set whichwrap+=<,>,h,l      "idk what this does
 set wildignore=*.o,*~,*.pyc "ignore these for wild cards
 set wildmenu        "auto complete commands
 set background=dark "Dark mode
-colorscheme slate   "Color scheme
+colorscheme desert   "Color scheme
 
 if has("win16") || has("win32")
     set wildignore+=.git\*,.hg\*,.svn\*
