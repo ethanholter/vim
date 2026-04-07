@@ -38,7 +38,6 @@ call plug#begin()
 Plug 'junegunn/vim-plug'
 Plug 'LnL7/vim-nix'
 " Quality of life
-Plug 'liuchengxu/vim-which-key'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 Plug 'scrooloose/nerdtree'
@@ -136,126 +135,7 @@ map <C-k> <C-W>k
 map <C-h> <C-W>h
 map <C-l> <C-W>l
 
-noremap J <Nop> 
-noremap H gT
-noremap L gt
-
-" move lines up and down
-noremap <A-k> :move -2<CR>
-noremap <A-j> :move +1<CR>
-noremap <A-up> :move -2<CR>
-noremap <A-down> :move +1<CR>
-
-vnoremap <A-k> :move '<-2<CR>gv
-vnoremap <A-j> :move '>+1<CR>gv
-vnoremap <A-up> :move '<-2<CR>gv
-vnoremap <A-down> :move '>+1<<CR>gv
-
-" prevent ctrl z typo from crashing vim
-noremap <C-z> <Nop>
-inoremap <C-z> <Nop>
-
 noremap <silent> <c-u> :call smooth_scroll#up(&scroll, 5, 2)<CR>
 noremap <silent> <c-d> :call smooth_scroll#down(&scroll, 5, 2)<CR>
 noremap <silent> <c-b> :call smooth_scroll#up(&scroll*2, 5, 4)<CR>
 noremap <silent> <c-f> :call smooth_scroll#down(&scroll*2, 5, 4)<CR>
-
-" ==================================================
-"                  Plugin: WhichKey
-" ==================================================
-
-nnoremap <silent> <leader> :silent WhichKey ' '<CR>
-vnoremap <silent> <leader> :silent <c-u> :silent WhichKeyVisual ' '<CR>
-
-let g:which_key_map =  {}
-let g:which_key_sep = ': '
-
-let g:which_key_use_floating_win = 1
-
-" Single mappings
-let g:which_key_map['/'] = [ '<Plug>NERDCommenterToggle'        , 'comment' ]
-let g:which_key_map['f'] = [ ':Files'                           , 'search files' ]
-let g:which_key_map['e'] = [ ':NERDTreeToggle'                      , 'file explorer (NERDTree)']
-let g:which_key_map['r'] = [ ':RG'                              , 'ripgrep' ]
-let g:which_key_map['t'] = [ ':term'                            , 'terminal']
-
-"let g:which_key_map.b = {
-    "\ 'name' : '+buffer'.
-    "\ 'd'    : ':
-
-let g:which_key_map.C = {
-      \ 'name' : '+configuration',
-      \ 'v' : [':tabnew $MYVIMRC'                                                          , 'open vimrc'],
-      \ 'c' : [':Colors'                                                                   , 'colors'],
-      \}
-
-let g:which_key_map.g = {
-      \ 'name' : '+goto',
-      \ 'd' : ['<plug>(lsp-definition)'              , 'definition'],
-      \ 's' : ['<plug>(lsp-document-symbol-search)'  , 'doc symbol search'],
-      \ 'S' : ['<plug>(lsp-workspace-symbol-search)' , 'ws search symbol'],
-      \ 'r' : ['<plug>(lsp-references)'              , 'references'],
-      \ 'i' : ['<plug>(lsp-implementation)'          , 'implementation'],
-      \ 't' : ['<plug>(lsp-type-definition)'         , 'type definition'],
-  \ }
-
-let g:which_key_map.c = {
-     \ 'name' : '+code_actions',
-     \ 'a' : [':LspCodeAction'    , 'code actions'],
-     \ 'r' : [':LspRename'        , 'rename symbol'],
-  \ }
-
-" Find
-let g:which_key_map.f = {
-      \ 'name' : '+fuzzyfinder',
-      \ 'f' : [':Files'           , 'files'],
-      \ 'h' : [':Helptags'        , 'help'],
-      \ 'm' : [':Maps'            , 'mappings'],
-      \ 'c' : [':Commands'        , 'commands'],
-      \ 'H' : [':History'         , 'history'],
-      \ 'r' : [':RG'              , 'rip grep'],
-      \ 'b' : [':BLines'          , 'current buffer'],
-      \ 'B' : [':Lines'           , 'all buffers'],
-      \}
-
-
-" s is for search
-let g:which_key_map.s = {
-      \ 'name' : '+search' ,
-      \ '/' : [':History/'                 , 'history'],
-      \ ';' : [':Commands'                 , 'commands'],
-      \ 'a' : [':Ag'                       , 'text Ag'],
-      \ 'b' : [':BLines'                   , 'current buffer'],
-      \ 'B' : [':Buffers'                  , 'open buffers'],
-      \ 'c' : [':Commits'                  , 'commits'],
-      \ 'C' : [':BCommits'                 , 'buffer commits'],
-      \ 'f' : [':Files'                    , 'files'],
-      \ 'g' : [':GFiles'                   , 'git files'],
-      \ 'G' : [':GFiles?'                  , 'modified git files'],
-      \ 'h' : [':History'                  , 'file history'],
-      \ 'H' : [':History:'                 , 'command history'],
-      \ 'l' : [':Lines'                    , 'lines'] ,
-      \ 'm' : [':Marks'                    , 'marks'] ,
-      \ 'M' : [':Maps'                     , 'normal maps'] ,
-      \ 'p' : [':Helptags'                 , 'help tags'] ,
-      \ 'P' : [':Tags'                     , 'project tags'],
-      \ 's' : [':CocList snippets'         , 'snippets'],
-      \ 'S' : [':Colors'                   , 'color schemes'],
-      \ 't' : [':Rg'                       , 'Rg text'],
-      \ 'T' : [':BTags'                    , 'buffer tags'],
-      \ 'w' : [':Windows'                  , 'search windows'],
-      \ 'y' : [':Filetypes'                , 'file types'],
-      \ 'z' : [':FZF'                      , 'FZF'],
-      \ }
-
-" P is for vim-plug
-let g:which_key_map.p = {
-      \ 'name' : '+plug' ,
-      \ 'i' : [':PlugInstall'             , 'install'],
-      \ 'u' : [':PlugUpdate'              , 'update'],
-      \ 'c' : [':PlugClean'               , 'clean'],
-      \ 's' : [':source ~/.vimrc'         , 'source vimrc'],
-      \ }
-
-" Register which key map
-call which_key#register(' ', "g:which_key_map")
